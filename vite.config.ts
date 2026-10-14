@@ -17,17 +17,38 @@ export default defineConfig(() => {
       hmr: process.env.DISABLE_HMR !== 'true',
       // Disable file watching when DISABLE_HMR is true to save CPU during agent edits.
       watch: process.env.DISABLE_HMR === 'true' ? null : {},
-      proxy: {
-        '/api': {
-          target: 'http://127.0.0.1:8001',
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, ''),
-        },
-        '^/(health|sample-data|upload|dataset|eda|train|feature-importance|predict|predict-batch|dashboard|advisor)': {
-          target: 'http://127.0.0.1:8001',
-          changeOrigin: true,
-        },
-      },
+      proxy: (() => {
+        const backendTarget = process.env.BACKEND_URL || 'https://attritioniq-production.up.railway.app';
+        return {
+          '/api': {
+            target: backendTarget,
+            changeOrigin: true,
+            secure: false,
+            rewrite: (path: string) => path.replace(/^\/api/, ''),
+            configure: (proxy: any) => {
+              proxy.on('error', (_err: any, _req: any, res: any) => {
+                if (res && 'writeHead' in res && !res.headersSent) {
+                  res.writeHead(503, { 'Content-Type': 'application/json' });
+                  res.end(JSON.stringify({ status: 'offline', message: 'Backend unavailable' }));
+                }
+              });
+            },
+          },
+          '^/(health|sample-data|upload|dataset|eda|train|feature-importance|predict|predict-batch|dashboard|advisor)': {
+            target: backendTarget,
+            changeOrigin: true,
+            secure: false,
+            configure: (proxy: any) => {
+              proxy.on('error', (_err: any, _req: any, res: any) => {
+                if (res && 'writeHead' in res && !res.headersSent) {
+                  res.writeHead(503, { 'Content-Type': 'application/json' });
+                  res.end(JSON.stringify({ status: 'offline', message: 'Backend unavailable' }));
+                }
+              });
+            },
+          },
+        };
+      })(),
     },
   };
 });

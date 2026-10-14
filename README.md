@@ -3,6 +3,18 @@
 > **Predict. Understand. Retain.**  
 > An enterprise-grade, full-stack Machine Learning analytics platform that helps HR leaders, people analytics teams, and business executives understand why employees leave, benchmark 5 classification models, predict individual flight risk, and generate actionable retention plans.
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Railway%20Production-00C7B7?style=for-the-badge&logo=railway&logoColor=white)](https://attritioniq-production.up.railway.app/)
+[![Swagger Docs](https://img.shields.io/badge/API%20Docs-FastAPI%20Swagger-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://attritioniq-production.up.railway.app/docs)
+[![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://attritioniq-production.up.railway.app/)
+[![React](https://img.shields.io/badge/React-19%20%2B%20Tailwind-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://attritioniq-production.up.railway.app/)
+
+---
+
+### 🌐 Live Production Links
+- 🚀 **Live Web Application:** [https://attritioniq-production.up.railway.app/](https://attritioniq-production.up.railway.app/)
+- 📖 **Interactive API Documentation (Swagger):** [https://attritioniq-production.up.railway.app/docs](https://attritioniq-production.up.railway.app/docs)
+- 🩺 **Backend Health Endpoint:** [https://attritioniq-production.up.railway.app/health](https://attritioniq-production.up.railway.app/health)
+
 ---
 
 ## 🏗️ Architecture Overview (8–10 Lines)
@@ -150,8 +162,12 @@ npm run dev
 ## 🧪 Automated Testing
 Run the included Python verification test suite against a running server:
 ```bash
+# Test against local server
 cd backend
 python test_api.py http://localhost:8000
+
+# OR test directly against live Railway production deployment
+python test_api.py https://attritioniq-production.up.railway.app
 ```
 This tests all 9 core endpoints:
 - `GET /health`
